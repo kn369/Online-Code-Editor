@@ -1,0 +1,46 @@
+.main{
+    height: 100%;
+    position: absolute;
+    padding: 0%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: black;
+}
+
+p{
+    font-size: 2vw;
+    color: white;
+}
+.button{
+    font-size: 1.5vw;
+}
+
+
+.submain{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup{
+    transition-duration: 300ms;
+}
+
+.text{
+    font-size: 4vw;
+    padding: 1%;
+    color: white;
+}
+
+.box{
+    height: 40vh;
+    width: 40vh;
+    background-color: rgb(34, 40, 49);
+}
+
+.modal-content{
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 1rem;
+    padding: 1%;
+}
