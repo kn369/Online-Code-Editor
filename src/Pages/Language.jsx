@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, NavLink, Card, Button, Nav } from 'react-bootstrap'
 function Language() {
     return (
-        <Container fluid style={{ background: "black", color: "white", }}>
+        <Container fluid style={{ background: "black", color: "white", height: "100vh"}}>
             <Container style={{ padding: '1%' }}>
                 <Card style={{ background: "grey", borderRadius: '1rem', margin: '1%' }}>
                     <Card.Body style={{ padding: '2%' }}>

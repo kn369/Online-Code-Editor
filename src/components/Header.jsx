@@ -2,46 +2,63 @@ import React from "react"
 import { useState } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import { Container, Modal, Nav, Figure, Ratio, Button, Image, Offcanvas, Form, FormControl, FloatingLabel, NavLink } from 'react-bootstrap'
-import Video1 from "./green.mp4"
-import Box from './box.png'
 import './Header.css'
-import { LinearGradient } from "react-text-gradients"
 import FancyText from "@carefully-coded/react-text-gradient"
+import axios from "axios"
 
 function ModalSignin(props) {
     const [validated, setValidated] = useState(false)
-
+    const [data,setData] = useState();
     const [email, setemail] = useState('');
     const [pass, setpass] = useState('');
     const [user, setuser] = useState('');
     const [confirmPass, setconfirmPass] = useState('');
     const [userValidation, setuserValidation] = useState('username cannot be empty');
+    const [passValidation, setpassValidation] = useState("password cannot be empty")
 
     const handleChangeEmail = (event) => {
-        setemail(event.target.value);
+        const emailValue = event.currentTarget.value;
+        setemail(emailValue);
+        setData(prevData => ({...prevData, email: emailValue}));
     };
+    
     const handleChangeUser = (event) => {
-        setuser(event.target.value);
-        if (event.target.value != null)
+        const userValue = event.target.value;
+        setuser(userValue);
+        setData(prevData => ({...prevData, user: userValue}));
+        if (userValue !== '') {
             setuserValidation('username already taken');
-        if (event.target.value == '')
+        } else {
             setuserValidation('username cannot be empty');
+        }
     };
+    
     const handleChangePass = (event) => {
-        setpass(event.target.value);
+        const passValue = event.target.value;
+        setpass(passValue);
+        setData(prevData => ({...prevData, pass: passValue}));
     };
-    const handleChangeConrirmPass = (event) => {
-        setconfirmPass(event.target.value);
+    
+    const handleChangeConfirmPass = (event) => {
+        const confirmPassValue = event.target.value;
+        setconfirmPass(confirmPassValue);
+        setData(prevData => ({...prevData, confirmPass: confirmPassValue}));
     };
+    
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
-            event.stopPropagation();
         }
 
-
+        if (pass != confirmPass) {
+            setValidated(false);
+        }
+        
+        else{
+            axios.post("http://localhost:8888/api/test/insert/", data);           
+        }
         setValidated(true);
     };
     return (
@@ -67,7 +84,7 @@ function ModalSignin(props) {
                                 required
                                 type="text"
                                 value={user}
-                                onChange={handleChangeUser}
+                                onChange={(event) =>handleChangeUser(event)}
                                 placeholder="Enter email"
                                 style={{ backdropFilter: 'blur(5px)', background: '#ffffff97', borderRadius: '0.5rem' }}
                             />
@@ -80,7 +97,7 @@ function ModalSignin(props) {
                                 required
                                 type="email"
                                 value={email}
-                                onChange={handleChangeEmail}
+                                onChange={(event) => handleChangeEmail(event)}
                                 placeholder="Enter email"
                                 style={{ backdropFilter: 'blur(5px)', background: '#ffffff97', borderRadius: '0.5rem' }}
                             />
@@ -91,6 +108,7 @@ function ModalSignin(props) {
                         >
                             <FormControl
                                 required
+                                id = "pass"
                                 type="password"
                                 value={pass}
                                 onChange={handleChangePass}
@@ -105,8 +123,8 @@ function ModalSignin(props) {
                             <FormControl
                                 required
                                 type="password"
-                                value={pass}
-                                onChange={handleChangeConrirmPass}
+                                value={confirmPass}
+                                onChange={handleChangeConfirmPass}
                                 placeholder="Enter email"
                                 style={{ backdropFilter: 'blur(5px)', background: '#ffffff97', borderRadius: '0.5rem' }}
                             />
@@ -114,7 +132,7 @@ function ModalSignin(props) {
                         </FloatingLabel><br />
                     </Form.Group>
                     <Button size="lg" type="submit">
-                        Log in
+                        Sign up
                     </Button><br />
                 </Form>
             </Modal.Body>
@@ -238,7 +256,7 @@ function header() {
                         <FancyText
                             gradient={{ from: '#17acff', to: '#ff68f0', type: 'linear' }}
                             animate
-                            animateDuration={1000}
+                            animateDuration={2000}
                         >
                             The best place to build, test, and discover front-end code
                         </FancyText>
@@ -252,10 +270,6 @@ function header() {
                     <Button variant="outline-light" className="button" onClick={() => setmodalShowLogin(true)}>Login</Button>
                     <ModalLogin show={modalShowLogin} onHide={() => setmodalShowLogin(false)} />
                 </div>
-                {/* <Container style={{maxWidth: '30%'}}>
-                        <img src={Box} style={{maxWidth: '100%', height: 'auto'}}/>
-                        <img src={Box} style={{maxWidth: '100%', height: 'auto'}}/>
-                    </Container> */}
             </Container>
         </Container >
     );

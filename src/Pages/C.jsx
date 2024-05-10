@@ -1,49 +1,29 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
-import { Controlled as ControlledEditor } from 'react-codemirror2'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/material.css'
+import { Container, Button } from 'react-bootstrap'
+import { Editor } from "@monaco-editor/react"
 import { useState, useEffect } from 'react'
+
 function html() {
-    const [value,setValue] = useState("")
-    const [srcDoc, setSrcDoc] = useState(``)
-    function handleChange(editor, data, value) {
-        setValue(value)
-    }
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setSrcDoc(`
-        `)
-        }, 250);
+    const [value,setValue] = useState("");
 
-        return () => clearTimeout(timeout)
-    }, [value])
 
+    
     return (
-        <div className='editor-container'>
-            <div style={{ backgroundColor: "black", color: 'white', padding: "0.5%" }}>
-                C
-            </div>
-            <ControlledEditor
-                onBeforeChange={handleChange}
-                className='controlled-editor'
+        <Container fluid style={{padding: '2%', background: 'black'}}>
+            <Container fluid style={{color: 'white', display: "flex", justifyContent: 'space-between', padding: '0%', alignItems: 'center'}}>
+                <p style={{fontSize: '1vw'}}>C</p>
+                <Button variant="secondary" style={{marginBottom: '1%'}} 
+                    onClick={runCode}
+                >Run</Button>
+            </Container>
+            <Editor 
+                height="50vh"
+                defaultLanguage='c'
+                theme="vs-dark"
                 value={value}
-                options={{
-                    lineWrapping: true,
-                    lint: true,
-                    mode: "text/x-csrc",
-                    theme: 'dracula',
-                    lineNumbers: true
-                }}
+                onChange={(value)=> setValue(value)}
             />
-            <iframe
-                        srcDoc={srcDoc}
-                        title="output"
-                        sandbox="allow-scripts"
-                        frameBorder="0"
-                        width="100%"
-                    />
-        </div>
+        </Container>
     );
 }
 
