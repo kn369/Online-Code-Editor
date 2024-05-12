@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, Container, Navbar, Nav } from 'react-bootstrap'
-import Logo from "./poem.png";
+
 
 function BasicExample() {
     return (

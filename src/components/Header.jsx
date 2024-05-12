@@ -8,7 +8,7 @@ import axios from "axios"
 
 function ModalSignin(props) {
     const [validated, setValidated] = useState(false)
-    const [data,setData] = useState();
+    const [data, setData] = useState();
     const [email, setemail] = useState('');
     const [pass, setpass] = useState('');
     const [user, setuser] = useState('');
@@ -19,45 +19,65 @@ function ModalSignin(props) {
     const handleChangeEmail = (event) => {
         const emailValue = event.currentTarget.value;
         setemail(emailValue);
-        setData(prevData => ({...prevData, email: emailValue}));
+        setData(prevData => ({ ...prevData, email: emailValue }));
     };
-    
+
     const handleChangeUser = (event) => {
         const userValue = event.target.value;
         setuser(userValue);
-        setData(prevData => ({...prevData, user: userValue}));
+        setData(prevData => ({ ...prevData, user: userValue }));
         if (userValue !== '') {
             setuserValidation('username already taken');
         } else {
             setuserValidation('username cannot be empty');
         }
     };
-    
+
     const handleChangePass = (event) => {
         const passValue = event.target.value;
         setpass(passValue);
-        setData(prevData => ({...prevData, pass: passValue}));
+        setData(prevData => ({ ...prevData, pass: passValue }));
     };
-    
+
     const handleChangeConfirmPass = (event) => {
         const confirmPassValue = event.target.value;
         setconfirmPass(confirmPassValue);
-        setData(prevData => ({...prevData, confirmPass: confirmPassValue}));
+        setData(prevData => ({ ...prevData, confirmPass: confirmPassValue }));
     };
-    
 
-    const handleSubmit = (event) => {
+
+    const handleSubmit = async (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
         }
 
-        if (pass != confirmPass) {
-            setValidated(false);
-        }
-        
-        else{
-            axios.post("http://localhost:8888/api/test/insert/", data);           
+        const newUser = {
+            username,
+            email,
+            password,
+        };
+
+        try {
+            const response = await fetch('http://localhost:8000/api/users/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newUser)
+            });
+
+            if (!response.ok) {
+                throw new Error('Signup request failed');
+            }
+
+            const responseData = await response.json();
+            console.log(responseData);
+            // Handle successful signup response
+
+        } catch (error) {
+            console.error('Error during signup:', error.message);
+            // Handle error during signup
         }
         setValidated(true);
     };
@@ -84,7 +104,7 @@ function ModalSignin(props) {
                                 required
                                 type="text"
                                 value={user}
-                                onChange={(event) =>handleChangeUser(event)}
+                                onChange={(event) => handleChangeUser(event)}
                                 placeholder="Enter email"
                                 style={{ backdropFilter: 'blur(5px)', background: '#ffffff97', borderRadius: '0.5rem' }}
                             />
@@ -108,7 +128,7 @@ function ModalSignin(props) {
                         >
                             <FormControl
                                 required
-                                id = "pass"
+                                id="pass"
                                 type="password"
                                 value={pass}
                                 onChange={handleChangePass}

@@ -20,6 +20,8 @@
     "code-mirror": "^3.21.0",
     "codemirror": "^5.65.16",
     "framer-motion": "^11.1.8",
+    "mongodb": "^6.6.1",
+    "postman": "^0.2.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-codemirror2": "^8.0.0",
